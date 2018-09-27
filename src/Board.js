@@ -126,17 +126,51 @@
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
       let n = this.get('n');
-      let bottomRow = this.get(n - 1);
       let diagonalIndex = majorDiagonalColumnIndexAtFirstRow;
       let myDiagonal = [];
       let pushedItem;
       if (diagonalIndex < Math.ceil((2 * n - 1) / 2)) {
         for (let i = 0; i < diagonalIndex + 1; i++) {
-          pushedItem = this.get(n - i - 1);
+          pushedItem = this.get(n - (n - i))[i]; 
           myDiagonal.push(pushedItem);
-          pushedItem = null; // fix me
+        }
+      } else {
+        for (let i = 0; i < n + (n - diagonalIndex) - 1; i++) { // loop for a different amount of time. when diagonal index is 6, we currently loop three times.
+          pushedItem = this.get(0 + i)[i + diagonalIndex - n + 1]; 
+          myDiagonal.push(pushedItem);
         }
       }
+      
+      return myDiagonal.filter(num => num !== 0).length > 1;
+    },
+
+          /*
+            i     | this.get(n - (n - i))           | evaluates to          | =>
+------------------------------------------------------------------------------------------
+            0     | this.get(4 - (4 - 0))           | this.get(4 - 4) // 0  | this.get(0) |
+            1     | this.get(4 - (4 - 1))           | this.get(4 - 3) // 1  | this.get(1) |
+            2     | this.get(4 - (4 - 2))           | this.get(4 - 2) // 2  | this.get(2) |
+            3     | this.get(4 - (4 - 3))           | this.get(4 - 1) // 3  | this.get(3) |
+
+
+
+Pattern B:
+diagonalIndex === 4
+           i     | this.get(0 + i)[i + diagonalIndex - n + 1]              | evaluates to         | value 
+------------------------------------------------------------------------------------------
+            0     | this.get(0 + i)[0 + 4 - 4 + 1]                         | this.get(0)[1] // 0  | 
+            1     | this.get(0 + i)[1 + 4 - 4 + 1]                         | this.get(1)[2] // 1  | 
+            2     | this.get(0 + i)[2 + 4 - 4 + 1]                         | this.get(2)[3] // 2  | 
+
+
+diagonalIndex === 5
+           i      | this.get(0 + i)[i + diagonalIndex - n + 1]    | evaluates to         | value 
+------------------------------------------------------------------------------------------
+            0     | this.get(0 + i)[0 + 5 - 4 + 1]    | this.get(0)[2] // 0  | 
+            1     | this.get(0 + i)[1 + 5 - 4 + 1]    | this.get(1)[3] // 1  | 
+      
+
+*/
       
       
       /* 
@@ -187,12 +221,16 @@
 
       */
 
-      
-    },
-
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      return false; // fixme
+      var numDiagonals = 2 * this.get('n') - 1;
+      var bool = false;
+      for (var i = 0; i < numDiagonals; i++) {
+        this.hasMajorDiagonalConflictAt(i) ?
+          bool = true :
+          null;
+      }
+      return bool;
     },
 
 
