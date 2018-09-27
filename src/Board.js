@@ -125,7 +125,69 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      let n = this.get('n');
+      let bottomRow = this.get(n - 1);
+      let diagonalIndex = majorDiagonalColumnIndexAtFirstRow;
+      let myDiagonal = [];
+      let pushedItem;
+      if (diagonalIndex < Math.ceil((2 * n - 1) / 2)) {
+        for (let i = 0; i < diagonalIndex + 1; i++) {
+          pushedItem = this.get(n - i - 1);
+          myDiagonal.push(pushedItem);
+          pushedItem = null; // fix me
+        }
+      }
+      
+      
+      /* 
+  
+        number of diagonals always equals 2n - 1; except for 0.
+        
+        PATTERN A: 
+        for whatever diagonal we're looking for, the first element is always
+        the same column as starting point (c0) and is in the row
+        that is equal to r[diagonalIndex] - 1; 
+        
+        We can always find the next bit in a diagonal by looking at the point
+        on the matrix whose coordinates are equal to 
+        (the previous value of c + 1)(the previous value of row + 1)
+        
+        We know we've reached the end of a diagonal when there are no more
+        columns to traverse, or when the c coordinate would exeed n.
+
+        star is the diagonal number
+        
+        EXCEPT WHEN  star > n, then:
+
+        PATTERN B: 
+        the coordinates of first element of the starth (some arbitrary) 
+        diagonal is always c(star - n)r0
+
+        stop after we've added a bit to a diagonal whose coordinates are
+        cn-1r0
+        
+
+        pattern a {
+      
+          do stuff
+        
+          if (nSubC === -1 && nSubR === -1) {
+            start doing patter b
+          }
+        }
+      
+      pattern b {
+      
+        do stuff
+
+        if( something happens ) {
+          stop
+        }
+      }
+
+      */
+
+      
     },
 
     // test if any major diagonals on this board contain conflicts
