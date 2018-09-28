@@ -16,18 +16,60 @@
 
 
 window.findNRooksSolution = function(n) {
-  var solution = undefined; //fixme
+  var solution = undefined;
+  var myArr = [];
+  var myRow = [];
+  for (var i = 0; i < n; i++) {
+    myRow = []; 
+    for (var j = 0; j < n; j++) {
+      if (j === i) {
+        myRow.push(1);
+      } else {
+        myRow.push(0);
+      }
+    }
+    myArr.push(myRow);
+  }
+  solution = new Board(myArr);
 
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
-  return solution;
+  return myArr;
 };
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  var solutionCount = undefined; //fixme
 
-  console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
-  return solutionCount;
+  if(n === 1) {
+    return 1;
+  } else {
+    return n * this.countNRooksSolutions(n-1)
+  }
+  // if (n <= 2) {
+  //   return n;
+  // }
+  // var solutionsArr = [];
+  // var poppedRow = undefined;
+  // var initialSolution = this.findNRooksSolution(n);
+  // solutionsArr.push(initialSolution);
+  // for (var i = 0; i < n - 1; i++) {
+  // debugger;
+  //   poppedRow = initialSolution.pop();
+  //   initialSolution.unshift(poppedRow);
+  //   solutionsArr.push(initialSolution);
+  // }
+  // for (var i = 0; i < n; i++) {
+  //   initialSolution[i].reverse();
+  // }
+  // for (var i = 0; i < n; i++) {
+  //   poppedRow = initialSolution.pop();
+  //   initialSolution.unshift(poppedRow);
+  //   solutionsArr.push(initialSolution);
+  // }
+  // var solutionCount = solutionsArr.length; //fixme
+
+
+  // console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
+  // return solutionCount;
 };
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
